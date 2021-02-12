@@ -10,3 +10,5 @@
       # Technical account
       input_role_technical_account: "{{ inventory_group_jenkins_technical_account }}"
       input_role_jenkins_ssh_key: "{{ inventory_group_jenkins_ssh_key }}"
+      # Directories structure
+      input_role_paths: "{{ inventory_group_jenkins_paths }}"
