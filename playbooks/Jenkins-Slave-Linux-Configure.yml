@@ -1,0 +1,9 @@
+---
+- name: Configure Jenkins Slave linux
+  hosts: jenkins_slave
+  become: yes
+  tasks:
+  - include_role:
+      name: Jenkins.PrepareOs
+    vars:
+      input_role_os_distribution: "{{ inventory_host_os_distribution }}"

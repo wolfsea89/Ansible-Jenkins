@@ -1,0 +1,3 @@
+---
+- name: Configure sudo
+  include: configure_sudo.yml
