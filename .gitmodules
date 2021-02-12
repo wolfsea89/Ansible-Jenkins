@@ -1,0 +1,4 @@
+[submodule "inventories/example"]
+	path = inventories/example
+	url = git@github.com:wolfsea89/Ansible-Inventory-Example.git
+	branch = feature/jenkins
