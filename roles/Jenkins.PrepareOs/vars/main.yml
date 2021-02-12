@@ -1,0 +1,11 @@
+---
+vars_role_sudo_config_path: /etc/sudoers
+vars_sshd_config_path: /etc/ssh/sshd_config
+
+vars_jenkins_master_system_user:
+  username: "{{ input_role_technical_account.username | default('jenkins') }}"
+  comment:  "{{ input_role_technical_account.comment | default('Jenkins - technical user account') }}"
+  shell:    "{{ input_role_technical_account.shell | default('/bin/bash') }}"
+  groups:   "{{ input_role_technical_account.system_groups | default('docker') }}"
+  uid:      "{{ input_role_technical_account.uid | default('30001') }}"
+  gid:      "{{ input_role_technical_account.gid | default('30000') }}"
