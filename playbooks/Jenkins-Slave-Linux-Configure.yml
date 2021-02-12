@@ -12,3 +12,5 @@
       input_role_jenkins_ssh_key: "{{ inventory_group_jenkins_ssh_key }}"
       # Directories structure
       input_role_paths: "{{ inventory_group_jenkins_paths }}"
+      # CA-certificate
+      input_role_jenkins_ssl_cert: "{{ inventory_group_jenkins_ssl_certificate }}"

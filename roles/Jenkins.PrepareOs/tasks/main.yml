@@ -19,3 +19,6 @@
 
 - name: "Create infrastructure directories"
   include: create_infrastructure_direstories.yml
+
+- name: Copy certifcate ssl
+  include: copy_certificate.yml
