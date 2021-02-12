@@ -7,3 +7,6 @@
       name: Jenkins.PrepareOs
     vars:
       input_role_os_distribution: "{{ inventory_host_os_distribution }}"
+      # Technical account
+      input_role_technical_account: "{{ inventory_group_jenkins_technical_account }}"
+      input_role_jenkins_ssh_key: "{{ inventory_group_jenkins_ssh_key }}"
