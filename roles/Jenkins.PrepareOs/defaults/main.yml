@@ -5,3 +5,11 @@ input_role_ssh_configuration:
   PasswordAuthentication: "no"
   Port: 22
   PermitRootLogin: "no"
+
+# Optional see vars role
+inventory_group_jenkins_technical_account:
+  username: jenkins 
+  comment: "Jenkins - technical user account"
+  shell: /bin/bash
+  groups: docker, sudo
+  uid: 30001

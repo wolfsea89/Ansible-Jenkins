@@ -1,0 +1,41 @@
+---
+- name: "[Ubuntu] Clean"
+  apt:
+    pkg:
+      - docker
+      - docker-engine
+      - docker.io 
+      - containerd
+      - runc
+    state: absent
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: "[Ubuntu] Add an Apt signing key to docker"
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: "[Ubuntu] Add repository docker"
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+    filename: docker
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: "[Ubuntu] Update the repository cache and install docker"
+  apt:
+    pkg:
+    - docker-ce 
+    - docker-ce-cli
+    - containerd.io
+    state: latest
+    update_cache: yes
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: "Docker enable service"
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  when: input_role_os_distribution == "Ubuntu"
