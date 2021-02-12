@@ -16,3 +16,6 @@
 
 - name: "Create technical user: {{ vars_jenkins_master_system_user.username }}" 
   include: craete_user_jenkins_master.yml
+
+- name: "Create infrastructure directories"
+  include: create_infrastructure_direstories.yml
