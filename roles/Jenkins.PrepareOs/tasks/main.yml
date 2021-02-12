@@ -4,3 +4,6 @@
 
 - name: Configure ssh
   include: configure_ssh.yml
+
+- name: Set hostname
+  include: set_hostname.yml
