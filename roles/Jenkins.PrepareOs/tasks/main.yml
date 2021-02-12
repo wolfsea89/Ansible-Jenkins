@@ -12,11 +12,7 @@
   include: install_tools.yml
 
 - name: install tools
-<<<<<<< Updated upstream
-  include: install_docker.yml
-=======
   include: install_docker.yml
 
 - name: "Create technical user: {{ vars_jenkins_master_system_user.username }}" 
   include: craete_user_jenkins_master.yml
->>>>>>> Stashed changes
