@@ -1,0 +1,7 @@
+---
+input_role_os_distribution: Ubuntu
+
+input_role_ssh_configuration:
+  PasswordAuthentication: "no"
+  Port: 22
+  PermitRootLogin: "no"

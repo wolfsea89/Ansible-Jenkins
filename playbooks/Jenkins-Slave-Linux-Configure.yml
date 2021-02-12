@@ -1,6 +1,6 @@
 ---
 - name: Configure Jenkins Slave linux
-  hosts: jenkins_slave
+  hosts: jenkins_slave_linux
   become: yes
   tasks:
   - include_role:
