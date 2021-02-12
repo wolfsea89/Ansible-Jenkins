@@ -1,3 +1,6 @@
 ---
 - name: Configure sudo
   include: configure_sudo.yml
+
+- name: Configure ssh
+  include: configure_ssh.yml
