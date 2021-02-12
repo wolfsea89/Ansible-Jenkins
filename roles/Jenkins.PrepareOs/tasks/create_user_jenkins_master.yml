@@ -1,0 +1,37 @@
+- name: "Create Technical group: {{ vars_jenkins_master_system_user.username }}"
+  group:
+    name: "{{ vars_jenkins_master_system_user.username }}"
+    state: present
+    gid: "{{ vars_jenkins_master_system_user.gid }}"
+
+- name: "Create Technical user: {{ vars_jenkins_master_system_user.username }}"
+  user:
+    name:     "{{ vars_jenkins_master_system_user.username }}"
+    comment:  "{{ vars_jenkins_master_system_user.comment }}"
+    shell:    "{{ vars_jenkins_master_system_user.shell }}"
+    groups:   "{{ vars_jenkins_master_system_user.groups |default(omit) }}"
+    uid:      "{{ vars_jenkins_master_system_user.uid |default(omit) }}"
+
+- name: Create ~/.ssh user directory
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  file:
+    state: directory
+    path: ~/.ssh
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0700
+
+- name: Create private ssh key
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  copy:
+    content: "{{ input_role_jenkins_ssh_key.private_ssh_key }}"
+    dest: ~/.ssh/id_rsa
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0600
+
+- name: Create public ssh key
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  copy:
+    content: "{{ input_role_jenkins_ssh_key.public_ssh_key }}"
+    dest: ~/.ssh/id_rsa.pub
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
