@@ -7,3 +7,9 @@
 
 - name: Set hostname
   include: set_hostname.yml
+
+- name: install tools
+  include: install_tools.yml
+
+- name: install tools
+  include: install_docker.yml
