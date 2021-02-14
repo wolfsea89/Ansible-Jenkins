@@ -4,7 +4,7 @@
   become: yes
   tasks:
   - include_role:
-      name: Jenkins.PrepareOs
+      name: Jenkins-PrepareOs
     vars:
       input_role_os_distribution:   "{{ inventory_host_os_distribution }}"
       # Technical account
