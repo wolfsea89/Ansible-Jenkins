@@ -1,0 +1,19 @@
+- name: Docker pull
+#  shell: docker pull jenkins/jenkins:lts
+  shell: docker pull wolfsea89/jenkins_master_snapshot:2021.2.12.5.326
+
+- name: Docker rm
+  shell: docker rm -f jenkins_master
+  ignore_errors: yes
+
+- name: Docker run
+  shell: |
+    docker run -d \
+    --name jenkins_master \
+    --user "{{ vars_jenkins_master_system_user.uid }}:{{ vars_jenkins_master_system_user.gid }}" \
+    --publish 8080:8080 \
+    --publish 50000:50000 \
+    --volume "{{ input_role_paths.jenkins_home_path }}:/var/jenkins_home:z" \
+    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl" \
+    --restart always \
+     wolfsea89/jenkins_master_snapshot:2021.2.12.5.326

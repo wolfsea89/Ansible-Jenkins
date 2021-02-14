@@ -38,3 +38,11 @@ input_role_jenkins_slave_app_configuration:
 
 input_role_jenkins_list_linux_slaves: "{{ groups['jenkins_slave'] }}"
 input_role_jenkins_slave_hostvars: "{{ hostvars }}"
+
+# Optional see vars role
+inventory_group_jenkins_technical_account:
+  username: jenkins 
+  comment: "Jenkins - technical user account"
+  shell: /bin/bash
+  groups: docker, sudo
+  uid: 30001
