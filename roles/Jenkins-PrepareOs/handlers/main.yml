@@ -1,0 +1,11 @@
+---
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted
+    enabled: yes
+
+- name: Reboot system
+  reboot:
+    reboot_timeout: 3600
+  when: ansible_host != 'localhost' or ansible_host != '127.0.0.1'
