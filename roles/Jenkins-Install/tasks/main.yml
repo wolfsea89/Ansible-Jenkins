@@ -1,0 +1,13 @@
+---
+- name: Create configuration Jenkins (CaaC)
+  include: create_configuration.yml
+  when: input_role_create_configuration
+
+- name: Create know_hosts file
+  include: known_hosts.yml
+  when: input_role_create_configuration
+
+- name: Deploy Jenkins Master
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  include: deploy_jenkins.yml
+  when: input_role_deploy_docker_jenkins

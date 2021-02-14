@@ -1,0 +1,8 @@
+- name: "Create infrastructure directories"
+  file:
+    state: directory
+    path: "{{ item.value }}"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    group: "{{ vars_jenkins_master_system_user.username }}"
+    mode: '0775'
+  loop: "{{ lookup('dict', input_role_paths) }}"

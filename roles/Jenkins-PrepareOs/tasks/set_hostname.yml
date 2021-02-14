@@ -1,0 +1,20 @@
+---
+- name: Change hostname 
+  hostname:
+    name: "{{ inventory_hostname.split('.')[0] }}"
+  notify:
+    - Reboot system
+
+- name: Change hostname
+  command: hostnamectl set-hostname "{{ inventory_hostname.split('.')[0] }}"
+  register: output
+  changed_when: output.stdout != ""
+  notify:
+    - Reboot system
+
+- name: Change /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1       {{ inventory_hostname.split('.')[0] }}       {{ inventory_hostname }}"
+    state: present

@@ -1,0 +1,15 @@
+- name: "[Ubuntu] Update"
+  apt:
+    update_cache: yes
+    upgrade: dist
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: "[Ubuntu] Install tools"
+  apt:
+    pkg:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    - acl
+  when: input_role_os_distribution == "Ubuntu"

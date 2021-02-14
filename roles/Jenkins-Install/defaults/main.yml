@@ -1,0 +1,48 @@
+---
+input_role_paths:
+  volume_path: /volumes
+  jenkins_home_path: /volumes/jenkins
+  jenkins_slaves_home_path: /volumes/jenkins/slaves
+  ssl_cert_dir: /volumes/ssl
+
+input_role_jenkins_ssh_key:
+  private_ssh_key: ""
+  public_ssh_key:  ""
+
+input_role_jenkins_credentials:
+  jenkins_master:
+    description: "Jenkins Master private ssh key"
+    type: basicSSHUserPrivateKey
+    passphrase: ""
+    username: jenkins
+    privateKey: "{{ inventory_group_jenkins_ssh_key.private_ssh_key }}"
+  none:
+    description: "Jenkins Master private ssh key"
+    type: basicSSHUserPrivateKey
+    passphrase: ""
+    username: jenkins
+    privateKey: "{{ inventory_group_jenkins_ssh_key.private_ssh_key }}"
+
+input_role_jenkins_master_app_configuration:
+  master_number_of_executors: 10
+  slaveAgentPort: 50000
+
+input_role_jenkins_slave_app_configuration: 
+  workers: 5
+  executors: 5
+  labels:
+  - slave_linux
+  - slave_ci_build
+  - slave_ci_publish
+  - slave_ci_docker
+
+input_role_jenkins_list_linux_slaves: "{{ groups['jenkins_slave'] }}"
+input_role_jenkins_slave_hostvars: "{{ hostvars }}"
+
+# Optional see vars role
+inventory_group_jenkins_technical_account:
+  username: jenkins 
+  comment: "Jenkins - technical user account"
+  shell: /bin/bash
+  groups: docker, sudo
+  uid: 30001
