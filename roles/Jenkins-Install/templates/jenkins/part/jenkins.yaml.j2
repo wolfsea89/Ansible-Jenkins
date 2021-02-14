@@ -1,0 +1,21 @@
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  numExecutors: "{{ input_role_jenkins_master_app_configuration.master_number_of_executors }}"
+  slaveAgentPort: "{{ input_role_jenkins_master_app_configuration.slaveAgentPort }}"
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+{% include ['jenkins/part/jenkins_nodes.yaml.j2'] %}

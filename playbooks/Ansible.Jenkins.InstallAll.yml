@@ -1,0 +1,61 @@
+---
+- name: Install Jenkins Slave
+  hosts: jenkins
+  become: yes
+  tasks:
+  - include_role:
+      name: Jenkins-PrepareOs
+    vars:
+      input_role_os_distribution:   "{{ inventory_host_os_distribution }}"
+      # Technical account
+      input_role_technical_account: "{{ inventory_group_jenkins_technical_account }}"
+      input_role_jenkins_ssh_key:   "{{ inventory_group_jenkins_ssh_key }}"
+      # Directories structure
+      input_role_paths:             "{{ inventory_group_jenkins_paths }}"
+      # CA-certificate
+      input_role_jenkins_ssl_cert:  "{{ inventory_group_jenkins_ssl_certificate }}"
+
+# - name: Install Jenkins Slave
+#   hosts: jenkins_slave
+#   become: yes
+#   tasks:
+#   - include_role:
+#       name: Ansible.Jenkins.InstallSlave
+#     vars:
+#       input_role_jenkins_slaves_group:           "{{ inventory_group_jenkins_slaves_group }}"
+#       input_role_jenkins_add_workers_to_groups:  "{{ inventory_group_add_workers_to_system_groups }}"
+#       input_role_jenkins_slave_numer_of_workers: "{{ inventory_group_jenkins_slave_app_configuration.workers }}"
+#       input_role_jenkins_ssh_key:                "{{ inventory_group_jenkins_ssh_key }}"
+
+- name: Install Jenkins Master
+  hosts: jenkins_master
+  become: yes
+  tasks:
+  - include_role:
+      name: Jenkins-PrepareOs
+    vars:
+      input_role_os_distribution:   "{{ inventory_host_os_distribution }}"
+      # Technical account
+      input_role_technical_account: "{{ inventory_group_jenkins_technical_account }}"
+      input_role_jenkins_ssh_key:   "{{ inventory_group_jenkins_ssh_key }}"
+      # Directories structure
+      input_role_paths:             "{{ inventory_group_jenkins_paths }}"
+      # CA-certificate
+      input_role_jenkins_ssl_cert:  "{{ inventory_group_jenkins_ssl_certificate }}"
+
+  - include_role:
+      name: Jenkins-Install
+    vars:
+      # Flags
+      input_role_create_configuration:             "{{ extra_vars_create_configuration }}"
+      # Technical account
+      input_role_deploy_docker_jenkins:            "{{ extra_vars_deploy_docker_jenkins }}"
+      input_role_technical_account: "{{ inventory_group_jenkins_technical_account }}"
+      # Other arguments
+      input_role_paths:                            "{{ inventory_group_jenkins_paths }}"
+      input_role_jenkins_ssh_key:                  "{{ inventory_group_jenkins_ssh_key }}"
+      input_role_jenkins_credentials:              "{{ inventory_group_jenkins_master_credentials }}"
+      input_role_jenkins_master_app_configuration: "{{ invenory_group_jenkins_master_app_configuration }}"
+      input_role_jenkins_slave_app_configuration:  "{{ inventory_group_jenkins_slave_app_configuration }}"
+      input_role_jenkins_list_linux_slaves:        "{{ groups['jenkins_slave_linux'] }}"
+      input_role_jenkins_slave_hostvars:           "{{ hostvars }}"
