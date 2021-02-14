@@ -1,0 +1,4 @@
+---
+- name: Create configuration Jenkins (CaaC)
+  include: create_configuration.yml
+  when: input_role_create_configuration

@@ -15,7 +15,7 @@ inventory_group_jenkins_technical_account:
   uid: 30001
 
 # Directories infrastructure
-inventory_group_jenkins_volumes:
+input_role_paths:
   volume_path: /volumes
   jenkins_home_path: /volumes/jenkins
   jenkins_slaves_home_path: /volumes/jenkins/slaves
