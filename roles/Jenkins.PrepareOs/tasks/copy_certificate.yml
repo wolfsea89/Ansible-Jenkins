@@ -1,6 +1,0 @@
-- name: Copy Certificate
-  copy:
-    content: "{{ input_role_jenkins_ssl_cert }}"
-    dest:    "{{ input_role_paths.ssl_cert_dir }}/ssl.crt"
-    owner:   "{{ vars_jenkins_master_system_user.username }}"
-    mode: 0644
