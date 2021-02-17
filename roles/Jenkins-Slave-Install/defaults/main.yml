@@ -1,0 +1,23 @@
+---
+input_role_os_distribution: Ubuntu
+
+input_role_jenkins_slaves_group:
+  name: jenkins_slaves
+  gid: 44021
+
+input_role_jenkins_add_workers_to_groups:
+  - jenkins
+  - docker
+
+input_role_jenkins_slave_numer_of_workers: 5
+
+input_role_jenkins_ssh_key:
+  private_ssh_key: ""
+  public_ssh_key: ""
+
+# Directories infrastructure
+input_role_paths:
+  volume_path: /volumes
+  jenkins_home_path: /volumes/jenkins
+  jenkins_slaves_home_path: /volumes/jenkins/slaves
+  ssl_cert_dir: /volumes/ssl

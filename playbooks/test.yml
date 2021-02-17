@@ -1,0 +1,6 @@
+- name: Install Jenkins Slave
+  hosts: all
+  become: yes
+  tasks:
+    - debug:
+        msg: "{{ inventory_group_jenkins_master_credentials.baseImage_services_AminPassword.password }}"
