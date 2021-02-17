@@ -16,7 +16,7 @@
       input_role_jenkins_ssl_cert:  "{{ inventory_group_jenkins_ssl_certificate }}"
 
   - include_role:
-      name: Ansible.Jenkins.InstallSlave
+      name: Jenkins-Slave-Install
     vars:
       input_role_os_distribution:                "{{ inventory_host_os_distribution }}"
       input_role_jenkins_slaves_group:           "{{ inventory_group_jenkins_slaves_group }}"
