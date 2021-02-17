@@ -19,7 +19,7 @@
       input_role_jenkins_ssl_cert:  "{{ inventory_group_jenkins_ssl_certificate }}"
 
   - include_role:
-      name: Jenkins-Install
+      name: Jenkins-Master-Install
     vars:
       # Flags
       input_role_create_configuration:             "{{ extra_vars_create_configuration }}"
