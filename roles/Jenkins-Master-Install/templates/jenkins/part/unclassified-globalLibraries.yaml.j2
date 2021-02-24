@@ -1,0 +1,16 @@
+  globalLibraries:
+    libraries:
+{% for sharedlibrary in input_role_jenkins_master_app_configuration.sharedlibraries %}
+    - defaultVersion: "{{ sharedlibrary.branch }}"
+      name: "{{ sharedlibrary.name }}"
+      retriever:
+        legacySCM:
+          scm:
+            git:
+              branches:
+              - name: "{{ sharedlibrary.branch }}"
+              buildChooser: "default"
+              userRemoteConfigs:
+              - credentialsId: "{{ sharedlibrary.credentialsId }}"
+                url: "{{ sharedlibrary.gitUrl }}"
+{% endfor %}

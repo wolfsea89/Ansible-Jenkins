@@ -3,8 +3,9 @@ jenkins:
   - "JNLP4-connect"
   - "Ping"
   authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
+    globalMatrix:
+      permissions:
+      - "Overall/Administer:admin"
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: false
