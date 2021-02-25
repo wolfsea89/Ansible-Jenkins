@@ -1,5 +1,10 @@
 {%- include ["jenkins/part/credentials.yaml.j2"] %}
+{{ "\n" -}}
 {%- include ["jenkins/part/jenkins.yaml.j2"] %}
+{{ "\n" -}}
+{%- include ["jenkins/part/jobs.yaml.j2"] %}
+{{ "\n" -}}
 {%- include ["jenkins/part/security.yaml.j2"] %}
+{{ "\n" -}}
 {%- include ["jenkins/part/unclassified.yaml.j2"] %}
 

@@ -26,6 +26,14 @@ input_role_jenkins_credentials:
 input_role_jenkins_master_app_configuration:
   master_number_of_executors: 10
   slaveAgentPort: 50000
+  location:
+    adminAddress: jenkins@localhost
+    url: "http://localhost:8080"
+  sharedlibraries:
+    - name: "Sharedlibraries"
+      branch: "feature/class"
+      gitUrl: "git@github.com:wolfsea89/Jenkins-Sharedlibraries.git"
+      credentialsId: "github"
 
 input_role_jenkins_slave_app_configuration: 
   workers: 5
