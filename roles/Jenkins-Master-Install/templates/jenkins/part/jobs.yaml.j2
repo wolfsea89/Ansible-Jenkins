@@ -1,0 +1,20 @@
+jobs:
+  - script: |-
+      job('SeedJob'){
+        displayName('SeedJob')
+        description('Create jobs')
+        scm {
+          git {
+            remote {
+              url('git@github.com:wolfsea89/Jenkins-SeedJobs.git')
+              credentials('github')
+            }
+            branch('master')
+          }
+        }
+        steps {
+          jobDsl {
+            targets('source/seedJob.groovy')
+          }
+        }
+      }
