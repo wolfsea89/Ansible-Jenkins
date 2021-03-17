@@ -1,11 +1,12 @@
 
 - name: Check docker image is exist
   changed_when: false
-  shell: docker image ls wolfsea89/jenkins_master |grep 1.0.0.1
+  ignore_errors: yes
+  shell: docker image ls wolfsea89/jenkins-master-snapshot |grep 2021.2.22.463
   register: docker_image_status
 
 - name: Docker pull
-  shell: docker pull wolfsea89/jenkins_master:1.0.0.1
+  shell: docker pull wolfsea89/jenkins-master-snapshot:2021.2.22.463
   when: docker_image_status.stdout_lines == ""
 
 - name: Stop and clean jenkins
@@ -22,4 +23,4 @@
     --volume "{{ input_role_paths.jenkins_home_path }}:/var/jenkins_home:z" \
     --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl" \
     --restart always \
-     wolfsea89/jenkins_master:1.0.0.1
+    wolfsea89/jenkins-master-snapshot:2021.2.22.463

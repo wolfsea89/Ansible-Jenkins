@@ -20,3 +20,5 @@ input_role_paths:
   jenkins_home_path: /volumes/jenkins
   jenkins_slaves_home_path: /volumes/jenkins/slaves
   ssl_cert_dir: /volumes/ssl
+
+input_role_enable_set_hostname: false

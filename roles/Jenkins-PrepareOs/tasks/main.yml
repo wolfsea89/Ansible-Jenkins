@@ -7,6 +7,7 @@
 
 - name: Set hostname
   include: set_hostname.yml
+  when: input_role_enable_set_hostname
 
 - name: install tools
   include: install_tools.yml
