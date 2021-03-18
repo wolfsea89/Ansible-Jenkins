@@ -22,3 +22,9 @@ input_role_paths:
   ssl_cert_dir: /volumes/ssl
 
 input_role_enable_set_hostname: false
+
+# Certificate SSL
+input_role_jenkins_ssl_cert:
+  ca_crt: ""
+  server_crt: ""
+  server_key: ""
