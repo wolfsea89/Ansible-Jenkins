@@ -25,6 +25,7 @@ input_role_jenkins_credentials:
 
 input_role_jenkins_master_app_configuration:
   master_number_of_executors: 10
+  httpPort: 443
   slaveAgentPort: 50000
   location:
     adminAddress: jenkins@localhost
