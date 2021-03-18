@@ -1,7 +1,4 @@
 ---
-- name: Install openjdk
-  include: install_openjdk.yml
-
 - name: Create worker gruop
   include: crate_worker_group.yml
 
