@@ -12,4 +12,11 @@
     - curl
     - software-properties-common
     - acl
+    - openjdk-8-jdk
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: "[Ubuntu] Add openjdk stable repository from PPA and install its signing key on Debian target"
+  apt_repository:
+    repo: 'ppa:openjdk-r/ppa'
+    codename: trusty
   when: input_role_os_distribution == "Ubuntu"
