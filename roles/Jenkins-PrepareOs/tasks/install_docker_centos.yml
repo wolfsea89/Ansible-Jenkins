@@ -1,0 +1,32 @@
+---
+- name: "[CentOS] remove conflict packages"
+  yum:
+    name:
+      - firewalld
+    state: absent
+
+- name: "[CentOS] Docker enable service"
+  yum:
+    name:
+    - docker
+    state: latest
+
+- name: "[CentOS] Add net.ipv4.ip_unprivileged_port_start=0 to /etc/sysctl.conf"
+  become: yes
+  lineinfile:
+    dest: "/etc/sysctl.conf"
+    regexp: '^#?net.ipv4.ip_unprivileged_port_start'
+    line: "net.ipv4.ip_unprivileged_port_start=0"
+    state: present
+  notify:
+    - Reboot system
+
+- name: "[CentOS] Add net.ipv4.ip_forward=1 to /etc/sysctl.conf"
+  become: yes
+  lineinfile:
+    dest: "/etc/sysctl.conf"
+    regexp: '^#?net.ipv4.ip_forward'
+    line: "net.ipv4.ip_forward=1"
+    state: present
+  notify:
+    - Reboot system

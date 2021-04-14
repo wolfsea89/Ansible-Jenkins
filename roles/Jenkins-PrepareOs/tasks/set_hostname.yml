@@ -1,5 +1,5 @@
 ---
-- name: Change hostname 
+- name: Change hostname
   hostname:
     name: "{{ inventory_hostname.split('.')[0] }}"
   notify:
@@ -18,3 +18,5 @@
     regexp: '^127\.0\.1\.1'
     line: "127.0.1.1       {{ inventory_hostname.split('.')[0] }}       {{ inventory_hostname }}"
     state: present
+  notify:
+    - Reboot system

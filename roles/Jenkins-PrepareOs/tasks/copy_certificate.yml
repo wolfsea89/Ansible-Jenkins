@@ -5,7 +5,7 @@
     owner:   "{{ vars_jenkins_master_system_user.username }}"
     mode: 0644
   register: ca_crt_status
-  when: 
+  when:
     - input_role_jenkins_ssl_cert.ca_crt is defined
     - input_role_jenkins_ssl_cert.ca_crt != ""
 
@@ -16,7 +16,7 @@
     owner:   "{{ vars_jenkins_master_system_user.username }}"
     mode: 0644
   register: jenkins_crt_status
-  when: 
+  when:
     - input_role_jenkins_ssl_cert.server_crt is defined
     - input_role_jenkins_ssl_cert.server_crt != ""
 
@@ -27,7 +27,7 @@
     owner:   "{{ vars_jenkins_master_system_user.username }}"
     mode: 0644
   register: jenkins_key_status
-  when: 
+  when:
     - input_role_jenkins_ssl_cert.server_key is defined
     - input_role_jenkins_ssl_cert.server_key != ""
 
@@ -81,7 +81,7 @@
 # Create certificate p12
 - name: Export Certificate to p12
   command: "openssl pkcs12 -export -in {{ input_role_paths.ssl_cert_dir }}/jenkins.crt -inkey {{ input_role_paths.ssl_cert_dir }}/jenkins.key -out {{ input_role_paths.ssl_cert_dir }}/jenkins.p12 -name {{ inventory_hostname }} -passout pass:changeit"
-  when: 
+  when:
     - input_role_jenkins_ssl_cert.server_crt is defined
     - input_role_jenkins_ssl_cert.server_key is defined
     - jenkins_crt_result.stat.exists
@@ -92,7 +92,7 @@
 # Create certificate jks
 - name: Create certificate jks
   command: keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore {{ input_role_paths.ssl_cert_dir }}/jenkins.jks -srckeystore {{ input_role_paths.ssl_cert_dir }}/jenkins.p12 -srcstoretype PKCS12 -srcstorepass changeit
-  when: 
+  when:
     - input_role_jenkins_ssl_cert.server_crt is defined
     - input_role_jenkins_ssl_cert.server_key is defined
     - jenkins_crt_result.stat.exists
@@ -116,7 +116,7 @@
     path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.p12"
     owner: "{{ vars_jenkins_master_system_user.username }}"
     mode: 0644
-  when: 
+  when:
     - jenkins_p12_result2.stat.exists
 
 - name: Change permissions {{ input_role_paths.ssl_cert_dir }}/jenkins.jks
@@ -124,5 +124,5 @@
     path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
     owner: "{{ vars_jenkins_master_system_user.username }}"
     mode: 0644
-  when: 
+  when:
     - jenkins_jks_result2.stat.exists

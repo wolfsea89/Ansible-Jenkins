@@ -3,8 +3,6 @@
   template:
     src:   jenkins/jenkins.yaml.j2
     dest:  "{{ input_role_paths.jenkins_home_path }}/jenkins.yaml"
-    owner: jenkins
-    group: jenkins
     mode:  0644
   register: jenkins_caac_status
 

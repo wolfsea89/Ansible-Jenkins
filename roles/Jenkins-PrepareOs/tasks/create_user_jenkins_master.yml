@@ -11,6 +11,31 @@
     shell:    "{{ vars_jenkins_master_system_user.shell }}"
     groups:   "{{ vars_jenkins_master_system_user.groups |default(omit) }}"
     uid:      "{{ vars_jenkins_master_system_user.uid |default(omit) }}"
+  register: test
+
+- name: Create {{ input_role_paths.jenkins_home_path }}/.ssh user directory
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  file:
+    state: directory
+    path: "{{ input_role_paths.jenkins_home_path }}/.ssh"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0755
+
+- name: Create private ssh key
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  copy:
+    content: "{{ input_role_jenkins_ssh_key.private_ssh_key }}"
+    dest: "{{ input_role_paths.jenkins_home_path }}/.ssh/id_rsa"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
+
+- name: Create public ssh key
+  become_user: "{{ vars_jenkins_master_system_user.username }}"
+  copy:
+    content: "{{ input_role_jenkins_ssh_key.public_ssh_key }}"
+    dest: "{{ input_role_paths.jenkins_home_path }}/.ssh/id_rsa.pub"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
 
 - name: Create ~/.ssh user directory
   become_user: "{{ vars_jenkins_master_system_user.username }}"

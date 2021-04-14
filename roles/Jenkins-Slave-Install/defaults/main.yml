@@ -21,3 +21,10 @@ input_role_paths:
   jenkins_home_path: /volumes/jenkins
   jenkins_slaves_home_path: /volumes/jenkins/slaves
   ssl_cert_dir: /volumes/ssl
+
+input_role_technical_account:
+  username: jenkins
+  comment: "Jenkins - technical user account"
+  shell: /bin/bash
+  groups: docker, sudo
+  uid: 30001
