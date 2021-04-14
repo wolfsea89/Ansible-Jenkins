@@ -19,6 +19,7 @@
       name: Ansible.Jenkins.InstallSlave
     vars:
       input_role_os_distribution:                "{{ inventory_host_os_distribution }}"
+      input_role_technical_account:              "{{ inventory_group_jenkins_technical_account }}"
       input_role_jenkins_slaves_group:           "{{ inventory_group_jenkins_slaves_group }}"
       input_role_jenkins_add_workers_to_groups:  "{{ inventory_group_add_workers_to_system_groups }}"
       input_role_jenkins_slave_numer_of_workers: "{{ inventory_group_jenkins_slave_app_configuration.workers }}"

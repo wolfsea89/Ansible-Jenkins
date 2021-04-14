@@ -2,6 +2,12 @@
 - name: Create worker gruop
   include: crate_worker_group.yml
 
-- name: "Create Agent user: {{ vars_jenkins_master_system_user.username }}" 
+- name: "Create Agent user: {{ vars_jenkins_master_system_user.username }}"
   include: create_workers.yml
   with_sequence: start=1 count={{ input_role_jenkins_slave_numer_of_workers }}
+
+- name: adding existing user {{ vars_jenkins_master_system_user.username }} to group jenkins_slaves
+  user:
+    name: "{{ vars_jenkins_master_system_user.username }}"
+    groups: "{{ vars_role_jenkins_group.name }}"
+    append: yes

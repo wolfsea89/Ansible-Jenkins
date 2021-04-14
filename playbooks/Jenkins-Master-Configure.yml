@@ -21,11 +21,12 @@
   - include_role:
       name: Jenkins-Master-Install
     vars:
+      input_role_os_distribution:                "{{ inventory_host_os_distribution }}"
       # Flags
       input_role_create_configuration:             "{{ extra_vars_create_configuration }}"
       # Technical account
       input_role_deploy_docker_jenkins:            "{{ extra_vars_deploy_docker_jenkins }}"
-      input_role_technical_account: "{{ inventory_group_jenkins_technical_account }}"
+      input_role_technical_account:                "{{ inventory_group_jenkins_technical_account }}"
       # Other arguments
       input_role_paths:                            "{{ inventory_group_jenkins_paths }}"
       input_role_jenkins_ssh_key:                  "{{ inventory_group_jenkins_ssh_key }}"

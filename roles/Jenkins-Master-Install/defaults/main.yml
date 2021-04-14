@@ -1,4 +1,5 @@
 ---
+input_role_os_distribution: Ubuntu
 input_role_paths:
   volume_path: /volumes
   jenkins_home_path: /volumes/jenkins
@@ -36,7 +37,7 @@ input_role_jenkins_master_app_configuration:
       gitUrl: "git@github.com:wolfsea89/Jenkins-Sharedlibraries.git"
       credentialsId: "github"
 
-input_role_jenkins_slave_app_configuration: 
+input_role_jenkins_slave_app_configuration:
   workers: 5
   executors: 5
   labels:
@@ -50,7 +51,7 @@ input_role_jenkins_slave_hostvars: "{{ hostvars }}"
 
 # Optional see vars role
 inventory_group_jenkins_technical_account:
-  username: jenkins 
+  username: jenkins
   comment: "Jenkins - technical user account"
   shell: /bin/bash
   groups: docker, sudo

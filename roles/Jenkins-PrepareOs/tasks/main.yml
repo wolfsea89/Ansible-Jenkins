@@ -13,9 +13,14 @@
   include: install_tools.yml
 
 - name: install tools
-  include: install_docker.yml
+  include: install_docker_ubuntu.yml
+  when: input_role_os_distribution == "Ubuntu"
 
-- name: "Create technical user: {{ vars_jenkins_master_system_user.username }}" 
+- name: install tools
+  include: install_docker_centos.yml
+  when: input_role_os_distribution == "CentOS"
+
+- name: "Create technical user: {{ vars_jenkins_master_system_user.username }}"
   include: create_user_jenkins_master.yml
 
 - name: "Create infrastructure directories"

@@ -1,4 +1,4 @@
-- name: "Create infrastructure directories"
+- name: "[Ubuntu] Create infrastructure directories"
   file:
     state: directory
     path: "{{ item.value }}"
@@ -6,3 +6,16 @@
     group: "{{ vars_jenkins_master_system_user.username }}"
     mode: '0775'
   loop: "{{ lookup('dict', input_role_paths) }}"
+  when:
+    - input_role_os_distribution == "Ubuntu"
+
+- name: "[CentOS] Create infrastructure directories"
+  file:
+    state: directory
+    path: "{{ item.value }}"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    group: "{{ vars_jenkins_master_system_user.username }}"
+    mode: '0777'
+  loop: "{{ lookup('dict', input_role_paths) }}"
+  when:
+    - input_role_os_distribution == "CentOS"

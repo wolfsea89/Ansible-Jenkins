@@ -2,11 +2,11 @@
 - name: Check docker image is exist
   changed_when: false
   ignore_errors: yes
-  shell: docker image ls wolfsea89/jenkins-master-snapshot |grep 2021.2.22.463
+  shell: docker image ls wolfsea89/jenkins-master-snapshot |grep 2021.4.13.3
   register: docker_image_status
 
 - name: Docker pull
-  shell: docker pull wolfsea89/jenkins-master-snapshot:2021.2.22.463
+  shell: docker pull wolfsea89/jenkins_master_snapshot:2021.4.13.3
   when: docker_image_status.stdout_lines == ""
 
 - name: Stop and clean jenkins
@@ -17,6 +17,7 @@
   stat:
     path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
   register: jenkins_jks_result
+  # when: input_role_os_distribution == "CentOS"
 
 - name: Start jenkins to http
   shell: |
@@ -28,9 +29,9 @@
     --volume "{{ input_role_paths.jenkins_home_path }}:/var/jenkins_home:z" \
     --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl" \
     --restart always \
-    wolfsea89/jenkins-master-snapshot:2021.2.22.463
-  when: not jenkins_jks_result.stat.exists
-  
+    wolfsea89/jenkins_master_snapshot:2021.4.13.3
+  when: jenkins_jks_result.stat.exists == false
+
 - name: Start jenkins to https
   shell: |
     docker run -d \
@@ -41,9 +42,9 @@
     --volume "{{ input_role_paths.jenkins_home_path }}:/var/jenkins_home:z" \
     --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl" \
     --restart always \
-    wolfsea89/jenkins-master-snapshot:2021.2.22.463 \
+    wolfsea89/jenkins_master_snapshot:2021.4.13.3 \
     --httpPort=-1 \
     --httpsPort=8443 \
     --httpsKeyStore=/etc/ssl/jenkins.jks \
     --httpsKeyStorePassword=changeit
-  when: jenkins_jks_result.stat.exists
+  when: jenkins_jks_result.stat.exists == true
