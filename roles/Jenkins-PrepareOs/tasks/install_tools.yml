@@ -14,6 +14,7 @@
     - acl
     - openjdk-8-jdk
     - openssl
+    - git
   when: input_role_os_distribution == "Ubuntu"
 
 - name: "[Ubuntu] Add openjdk stable repository from PPA and install its signing key on Debian target"
@@ -36,4 +37,5 @@
     - acl
     - java-11-openjdk.x86_64
     - openssl
+    - git
   when: input_role_os_distribution == "CentOS"
