@@ -1,0 +1,16 @@
+- name: "[CentOS] Update all packages"
+  yum:
+    name: '*'
+    state: latest
+  when: input_role_os_distribution == "CentOS"
+
+- name: "[CentOS] Install tools"
+  yum:
+    name:
+    - ca-certificates
+    - curl
+    - acl
+    - java-11-openjdk.x86_64
+    - openssl
+    - git
+  when: input_role_os_distribution == "CentOS"

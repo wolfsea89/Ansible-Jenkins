@@ -18,5 +18,6 @@
     regexp: '^127\.0\.1\.1'
     line: "127.0.1.1       {{ inventory_hostname.split('.')[0] }}       {{ inventory_hostname }}"
     state: present
+  when: input_role_os_distribution == "Ubuntu"
   notify:
     - Reboot system

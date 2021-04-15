@@ -23,10 +23,6 @@
     user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
     state: present
     key: "{{ input_role_jenkins_ssh_key.public_ssh_key }}"
-  register: test
-
-- debug:
-    msg: "{{ test }}"
 
 - name: Set SELinux home dir
   become_user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
