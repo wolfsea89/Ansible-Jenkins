@@ -1,8 +1,4 @@
 # /etc/pki/ca-trust/source/ca.crt
-
-- debug:
-    msg: "{{ input_role_jenkins_ssl_cert }}"
-
 - name: Copy CA Certificate
   copy:
     content: "{{ input_role_jenkins_ssl_cert.ca_crt }}"
