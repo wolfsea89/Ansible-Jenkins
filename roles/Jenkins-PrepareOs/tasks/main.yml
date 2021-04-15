@@ -9,8 +9,13 @@
   include: set_hostname.yml
   when: input_role_enable_set_hostname
 
-- name: install tools
-  include: install_tools.yml
+- name: install tools for Ubuntu
+  include: install_tools_ubuntu.yml
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: install tools for Centos
+  include: install_tools_centos.yml
+  when: input_role_os_distribution == "CentOS"
 
 - name: install tools
   include: install_docker_ubuntu.yml

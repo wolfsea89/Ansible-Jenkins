@@ -26,8 +26,8 @@
     --user "{{ vars_jenkins_master_system_user.uid }}:{{ vars_jenkins_master_system_user.gid }}" \
     --publish {{ input_role_jenkins_master_app_configuration.httpPort }}:8080 \
     --publish {{ input_role_jenkins_master_app_configuration.slaveAgentPort }}:50000 \
-    --volume "{{ input_role_paths.jenkins_home_path }}:/var/jenkins_home:z" \
-    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl" \
+    --volume "{{ input_role_paths.volume_jenkins_home }}:/var/jenkins_home:z" \
+    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl:z" \
     --restart always \
     wolfsea89/jenkins_master_snapshot:2021.4.13.3
   when: jenkins_jks_result.stat.exists == false
@@ -35,12 +35,13 @@
 - name: Start jenkins to https
   shell: |
     docker run -d \
+    --privileged \
     --name jenkins_master \
     --user "{{ vars_jenkins_master_system_user.uid }}:{{ vars_jenkins_master_system_user.gid }}" \
     --publish {{ input_role_jenkins_master_app_configuration.httpPort }}:8443 \
     --publish {{ input_role_jenkins_master_app_configuration.slaveAgentPort }}:50000 \
-    --volume "{{ input_role_paths.jenkins_home_path }}:/var/jenkins_home:z" \
-    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl" \
+    --volume "{{ input_role_paths.volume_jenkins_home }}:/var/jenkins_home":z \
+    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl:z" \
     --restart always \
     wolfsea89/jenkins_master_snapshot:2021.4.13.3 \
     --httpPort=-1 \

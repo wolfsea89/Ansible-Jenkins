@@ -11,6 +11,8 @@
     shell:    "{{ vars_jenkins_master_system_user.shell }}"
     groups:   "{{ vars_jenkins_master_system_user.groups |default(omit) }}"
     uid:      "{{ vars_jenkins_master_system_user.uid |default(omit) }}"
+    group:    "{{ vars_jenkins_master_system_user.gid |default(omit) }}"
+    home:     "{{ input_role_paths.jenkins_home_path }}"
   register: test
 
 - name: Create {{ input_role_paths.jenkins_home_path }}/.ssh user directory
@@ -19,7 +21,7 @@
     state: directory
     path: "{{ input_role_paths.jenkins_home_path }}/.ssh"
     owner: "{{ vars_jenkins_master_system_user.username }}"
-    mode: 0755
+    mode: 0700
 
 - name: Create private ssh key
   become_user: "{{ vars_jenkins_master_system_user.username }}"
@@ -27,7 +29,7 @@
     content: "{{ input_role_jenkins_ssh_key.private_ssh_key }}"
     dest: "{{ input_role_paths.jenkins_home_path }}/.ssh/id_rsa"
     owner: "{{ vars_jenkins_master_system_user.username }}"
-    mode: 0644
+    mode: 0600
 
 - name: Create public ssh key
   become_user: "{{ vars_jenkins_master_system_user.username }}"
@@ -35,28 +37,12 @@
     content: "{{ input_role_jenkins_ssh_key.public_ssh_key }}"
     dest: "{{ input_role_paths.jenkins_home_path }}/.ssh/id_rsa.pub"
     owner: "{{ vars_jenkins_master_system_user.username }}"
-    mode: 0644
-
-- name: Create ~/.ssh user directory
-  become_user: "{{ vars_jenkins_master_system_user.username }}"
-  file:
-    state: directory
-    path: ~/.ssh
-    owner: "{{ vars_jenkins_master_system_user.username }}"
-    mode: 0700
-
-- name: Create private ssh key
-  become_user: "{{ vars_jenkins_master_system_user.username }}"
-  copy:
-    content: "{{ input_role_jenkins_ssh_key.private_ssh_key }}"
-    dest: ~/.ssh/id_rsa
-    owner: "{{ vars_jenkins_master_system_user.username }}"
     mode: 0600
 
-- name: Create public ssh key
-  become_user: "{{ vars_jenkins_master_system_user.username }}"
-  copy:
-    content: "{{ input_role_jenkins_ssh_key.public_ssh_key }}"
-    dest: ~/.ssh/id_rsa.pub
-    owner: "{{ vars_jenkins_master_system_user.username }}"
-    mode: 0644
+- name: SELinux setup context
+  shell: "chcon -R unconfined_u:object_r:user_home_t:s0 {{ input_role_paths.jenkins_home_path }}"
+  when: input_role_os_distribution == "CentOS"
+
+- name: SELinux setup context
+  shell: "chcon -R unconfined_u:object_r:ssh_home_t:s0 {{ input_role_paths.jenkins_home_path }}/.ssh"
+  when: input_role_os_distribution == "CentOS"

@@ -16,7 +16,7 @@
       # Directories structure
       input_role_paths:                                    "{{ inventory_group_jenkins_paths }}"
       # Certificate SSL
-      input_role_jenkins_ssl_cert:                         "{{ inventory_group_jenkins_ssl_certificate }}"
+      input_role_jenkins_ssl_cert:                         "{{ inventory_host_jenkins_ssl_certificate }}"
 
   - include_role:
       name: Jenkins-Master-Install
@@ -32,6 +32,6 @@
       input_role_jenkins_ssh_key:                          "{{ inventory_group_jenkins_ssh_key }}"
       input_role_jenkins_credentials:                      "{{ inventory_group_jenkins_master_credentials }}"
       input_role_jenkins_master_app_configuration:         "{{ invenory_group_jenkins_master_app_configuration }}"
-      input_role_jenkins_slave_app_configuration:          "{{ inventory_group_jenkins_slave_app_configuration }}"
+      input_role_jenkins_slave_app_configuration:          "{{ inventory_host_jenkins_slave_app_configuration }}"
       input_role_jenkins_list_linux_slaves:                "{{ groups['jenkins_slave_linux'] }}"
       input_role_jenkins_slave_hostvars:                   "{{ hostvars }}"
