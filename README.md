@@ -40,8 +40,11 @@ Konfiguracja Jenkinsa z poziomu kodu
 Playbooki
 =========
 playbooks/Jenkins-InstallAll.yml - Instalowanie całego klastra
+
 playbooks/Jenkins-Master-Configure.yml - Instalowanie Jenkins Mastera
+
 playbooks/Jenkins-Slave-Linux-Configure.yml - Instalowanie Jenkins Slave
+
 playbooks/test_connection.yml - Test połączenia wszystkich maszyn w klastrze
 
 Inventory
