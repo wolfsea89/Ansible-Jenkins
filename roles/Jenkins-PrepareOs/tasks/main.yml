@@ -17,11 +17,11 @@
   include: install_tools_centos.yml
   when: input_role_os_distribution == "CentOS"
 
-- name: install tools
+- name: install docker for Ubuntu
   include: install_docker_ubuntu.yml
   when: input_role_os_distribution == "Ubuntu"
 
-- name: install tools
+- name: install docker for Centos
   include: install_docker_centos.yml
   when: input_role_os_distribution == "CentOS"
 
