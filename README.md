@@ -7,30 +7,35 @@ Konfiguracja Jenkinsa z poziomu kodu
 ![Ogólny schemat](docs/overview.png)
 
 1. Jenkins przygotowuje maszynę do pracy
-  - Konfiguracja sudo
-  - Konfiguracja serwera SSH
-  - Ustawianie hostname
-    ! Mozna wyłaczyć ten krok używając flagi (input_role_enable_set_hostname: true/false)
-  - Instalowanie paczek dla Ubuntu
-  - Instalowanie paczek dla Centosa
-  - Konfiguracja dockera dla Ubuntu
-  - Konfiguracja dockera dla Centosa
-    ! Instalowanie natywne podman (nie docker)
-    ! Ustawienie SELinux
-  - Tworzenie technicznego użytkownika
-  - Tworzenie infrastruktury katalogów
-  - Kopiowanie Certyfikatu SSL/TLS
+    - Konfiguracja sudo
+    - Konfiguracja serwera SSH
+    - Ustawianie hostname
+
+      ! Mozna wyłaczyć ten krok używając flagi (input_role_enable_set_hostname: true/false)
+
+    - Instalowanie paczek dla Ubuntu
+    - Instalowanie paczek dla Centosa
+    - Konfiguracja dockera dla Ubuntu
+    - Konfiguracja dockera dla Centosa
+
+      ! Instalowanie natywne podman (nie docker)
+
+      ! Ustawienie SELinux
+
+    - Tworzenie technicznego użytkownika
+    - Tworzenie infrastruktury katalogów
+    - Kopiowanie Certyfikatu SSL/TLS
 
 2. Konfiguracja Jenkins Linux Slaves
-  - Tworzenie grupy systemowej dla workerów
-  - Tworzenie (n) workerów
+    - Tworzenie grupy systemowej dla workerów
+    - Tworzenie (n) workerów
 
 3. Konfiguracja Jenkins Master
-  - Generowanie konfiguracji dla Jenkinsa
-    - kopiowanie klucze SSH
-    - tworzenie pliku known_host dla połączeń SSH
-    - generowanie jenkins.yaml - Configuration as a Code
-  - Deploy docker jenkins image
+    - Generowanie konfiguracji dla Jenkinsa
+        - kopiowanie klucze SSH
+        - tworzenie pliku known_host dla połączeń SSH
+        - generowanie jenkins.yaml - Configuration as a Code
+    - Deploy docker jenkins image
 
 Playbooki
 =========
