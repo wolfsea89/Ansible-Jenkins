@@ -1,0 +1,29 @@
+---
+- name: Configure Jenkins Slave linux
+  hosts: jenkins_slave_linux
+  become: yes
+  tasks:
+  - include_role:
+      name: Jenkins-PrepareOs
+    vars:
+      input_role_os_distribution:                          "{{ inventory_host_os_distribution }}"
+      # Technical account
+      input_role_technical_account:                        "{{ inventory_host_jenkins_technical_account }}"
+      input_role_jenkins_ssh_key:                          "{{ inventory_group_jenkins_ssh_key }}"
+      # Directories structure
+      input_role_paths:                                    "{{ inventory_group_jenkins_paths }}"
+      # Certificate SSL
+      input_role_jenkins_ssl_cert:                         "{{ inventory_host_jenkins_ssl_certificate }}"
+
+  - include_role:
+      name: Jenkins-Slave-Install
+    vars:
+      input_role_os_distribution:                          "{{ inventory_host_os_distribution }}"
+      # Directories structure
+      input_role_paths:                                    "{{ inventory_group_jenkins_paths }}"
+      # Technical account
+      input_role_technical_account:                        "{{ inventory_host_jenkins_technical_account }}"
+      input_role_jenkins_slaves_group:                     "{{ inventory_host_jenkins_slaves_group }}"
+      input_role_jenkins_add_workers_to_groups:            "{{ inventory_host_add_workers_to_system_groups }}"
+      input_role_jenkins_slave_numer_of_workers:           "{{ inventory_host_jenkins_slave_app_configuration.workers }}"
+      input_role_jenkins_ssh_key:                          "{{ inventory_group_jenkins_ssh_key }}"

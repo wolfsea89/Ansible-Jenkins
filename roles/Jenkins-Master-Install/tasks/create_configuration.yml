@@ -1,0 +1,29 @@
+---
+- name: Copy ssh dir
+  copy:
+    src: ~/.ssh
+    dest: "{{ input_role_paths.volume_jenkins_home }}"
+    mode:  0777
+    remote_src: yes
+
+- name: "Change permissions {{ input_role_paths.volume_jenkins_home }}"
+  file:
+    path: "{{ input_role_paths.volume_jenkins_home }}"
+    mode: 0777
+
+- name: "Create {{ input_role_paths.volume_jenkins_home }}/.ssh/known_hosts"
+  file:
+    path: "{{ input_role_paths.volume_jenkins_home }}/.ssh/known_hosts"
+    mode: 0777
+    state: touch
+
+- name: "Create configuration {{ input_role_paths.volume_jenkins_home }}/jenkins.yaml"
+  template:
+    src:   jenkins/jenkins.yaml.j2
+    dest:  "{{ input_role_paths.volume_jenkins_home }}/jenkins.yaml"
+    mode:  0644
+  register: jenkins_caac_status
+
+- name: Set configuration is changed
+  set_fact:
+    return_Ansible_Jenkins_ReloadConfiguration_configuration_changed: "{{ jenkins_caac_status.changed }}"

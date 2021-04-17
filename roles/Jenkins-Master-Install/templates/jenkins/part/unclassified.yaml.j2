@@ -1,0 +1,37 @@
+unclassified:
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  diskUsageProjectActionFactory:
+    checkWorkspaceOnSlave: false
+    historyLength: 183
+    showGraph: false
+    timeoutWorkspace: 5
+  fingerprints:
+    fingerprintCleanupDisabled: false
+    storage: "file"
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookUrl: "{{ input_role_jenkins_master_app_configuration.location.url }}:8080/github-webhook/"
+  gitSCM:
+    addGitTagAction: false
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  junitTestResultStorage:
+    storage: "file"
+  location:
+    adminAddress: "{{ input_role_jenkins_master_app_configuration.location.adminAddress }}"
+    url: "{{ input_role_jenkins_master_app_configuration.location.url }}:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  pollSCM:
+    pollingThreadCount: 10
+{{ "\n" -}}
+{%- include ["jenkins/part/unclassified-globalLibraries.yaml.j2"] %}

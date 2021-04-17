@@ -1,0 +1,6 @@
+---
+- name: "Create group {{ vars_role_jenkins_group.name }}"
+  group:
+    name: "{{ vars_role_jenkins_group.name }}"
+    gid:  "{{ vars_role_jenkins_group.gid }}"
+    non_unique: yes

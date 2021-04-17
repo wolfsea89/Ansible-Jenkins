@@ -1,0 +1,37 @@
+---
+- name: "Create workes {{ vars_role_jenkins_slave_user_template.name }}{{ item }} if not exist"
+  user:
+    name: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+    comment: "{{ vars_role_jenkins_slave_user_template.comment }}{{ item }}"
+    group: "{{ vars_role_jenkins_group.name }}"
+    groups: "{{ input_role_jenkins_add_workers_to_groups }}"
+    uid: "3502{{ item }}"
+    home: "{{ input_role_paths.jenkins_slaves_home_path }}/{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+    shell: /bin/bash
+
+- name: Create ~/.ssh user directory
+  become_user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+  file:
+    state: directory
+    path:  "{{ input_role_paths.jenkins_slaves_home_path }}/{{ vars_role_jenkins_slave_user_template.name }}{{ item }}/.ssh"
+    owner: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+    mode: 0700
+
+- name: "Set authorized {{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+  become_user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+  authorized_key:
+    user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+    state: present
+    key: "{{ input_role_jenkins_ssh_key.public_ssh_key }}"
+
+- name: Set SELinux home dir
+  become_user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+  shell: chcon -R system_u:object_r:user_home_dir_t:s0 {{ input_role_paths.jenkins_slaves_home_path }}/{{ vars_role_jenkins_slave_user_template.name }}{{ item }}
+  when:
+    - input_role_os_distribution == "CentOS"
+
+- name: Set SELinux ssh dir
+  become_user: "{{ vars_role_jenkins_slave_user_template.name }}{{ item }}"
+  shell: chcon -R system_u:object_r:ssh_home_t:s0 {{ input_role_paths.jenkins_slaves_home_path }}/{{ vars_role_jenkins_slave_user_template.name }}{{ item }}/.ssh
+  when:
+    - input_role_os_distribution == "CentOS"

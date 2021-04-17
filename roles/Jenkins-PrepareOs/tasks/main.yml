@@ -1,0 +1,35 @@
+---
+- name: Configure sudo
+  include: configure_sudo.yml
+
+- name: Configure ssh
+  include: configure_ssh.yml
+
+- name: Set hostname
+  include: set_hostname.yml
+  when: input_role_enable_set_hostname
+
+- name: install tools for Ubuntu
+  include: install_tools_ubuntu.yml
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: install tools for Centos
+  include: install_tools_centos.yml
+  when: input_role_os_distribution == "CentOS"
+
+- name: install docker for Ubuntu
+  include: install_docker_ubuntu.yml
+  when: input_role_os_distribution == "Ubuntu"
+
+- name: install docker for Centos
+  include: install_docker_centos.yml
+  when: input_role_os_distribution == "CentOS"
+
+- name: "Create technical user: {{ vars_jenkins_master_system_user.username }}"
+  include: create_user_jenkins_master.yml
+
+- name: "Create infrastructure directories"
+  include: create_infrastructure_direstories.yml
+
+- name: Copy certifcate ssl
+  include: copy_certificate.yml

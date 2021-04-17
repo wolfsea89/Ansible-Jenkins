@@ -1,0 +1,30 @@
+---
+input_role_os_distribution: Ubuntu
+
+input_role_ssh_configuration:
+  PasswordAuthentication: "no"
+  Port: 22
+  PermitRootLogin: "no"
+
+# Optional see vars role
+input_role_technical_account:
+  username: jenkins
+  comment: "Jenkins - technical user account"
+  shell: /bin/bash
+  groups: docker, sudo
+  uid: 30001
+
+# Directories infrastructure
+input_role_paths:
+  volume_path: /volumes
+  jenkins_home_path: /volumes/jenkins
+  jenkins_slaves_home_path: /volumes/jenkins/slaves
+  ssl_cert_dir: /volumes/ssl
+
+input_role_enable_set_hostname: false
+
+# Certificate SSL
+input_role_jenkins_ssl_cert:
+  ca_crt: ""
+  server_crt: ""
+  server_key: ""

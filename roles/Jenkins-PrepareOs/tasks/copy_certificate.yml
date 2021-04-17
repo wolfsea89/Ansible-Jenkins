@@ -1,0 +1,129 @@
+# /etc/pki/ca-trust/source/ca.crt
+- name: Copy CA Certificate
+  copy:
+    content: "{{ input_role_jenkins_ssl_cert.ca_crt }}"
+    dest:    "{{ input_role_paths.ssl_cert_dir }}/ca.crt"
+    owner:   "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
+  register: ca_crt_status
+  when:
+    - input_role_jenkins_ssl_cert.ca_crt is defined
+    - input_role_jenkins_ssl_cert.ca_crt != ""
+
+- name: Copy SSL Certificate
+  copy:
+    content: "{{ input_role_jenkins_ssl_cert.server_crt }}"
+    dest:    "{{ input_role_paths.ssl_cert_dir }}/jenkins.crt"
+    owner:   "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
+  register: jenkins_crt_status
+  when:
+    - input_role_jenkins_ssl_cert.server_crt is defined
+    - input_role_jenkins_ssl_cert.server_crt != ""
+
+- name: Copy Private Key for SSL Certificate
+  copy:
+    content: "{{ input_role_jenkins_ssl_cert.server_key }}"
+    dest:    "{{ input_role_paths.ssl_cert_dir }}/jenkins.key"
+    owner:   "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
+  register: jenkins_key_status
+  when:
+    - input_role_jenkins_ssl_cert.server_key is defined
+    - input_role_jenkins_ssl_cert.server_key != ""
+
+# Check files is exist
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/ca.crt exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/ca.crt"
+  register: ca_crt_result
+
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/jenkins.crt exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.crt"
+  register: jenkins_crt_result
+
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/jenkins.key exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.key"
+  register: jenkins_key_result
+
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/jenkins.p12 exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.p12"
+  register: jenkins_p12_result
+
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/jenkins.jks exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
+  register: jenkins_jks_result
+
+# Clean old certificates
+- name: Remove old jenkins.p12
+  file:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.p12"
+    state: absent
+  when:
+    - input_role_jenkins_ssl_cert.server_crt is defined
+    - input_role_jenkins_ssl_cert.server_key is defined
+    - jenkins_crt_status.changed
+    - jenkins_key_status.changed
+
+- name: Remove old jenkins.jks
+  file:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
+    state: absent
+  when:
+    - input_role_jenkins_ssl_cert.server_crt is defined
+    - input_role_jenkins_ssl_cert.server_key is defined
+    - jenkins_crt_status.changed
+    - jenkins_key_status.changed
+
+# Create certificate p12
+- name: Export Certificate to p12
+  command: "openssl pkcs12 -export -in {{ input_role_paths.ssl_cert_dir }}/jenkins.crt -inkey {{ input_role_paths.ssl_cert_dir }}/jenkins.key -out {{ input_role_paths.ssl_cert_dir }}/jenkins.p12 -name {{ inventory_hostname }} -passout pass:changeit"
+  when:
+    - input_role_jenkins_ssl_cert.server_crt is defined
+    - input_role_jenkins_ssl_cert.server_key is defined
+    - jenkins_crt_result.stat.exists
+    - jenkins_key_result.stat.exists
+    - jenkins_crt_status.changed
+    - jenkins_key_status.changed
+
+# Create certificate jks
+- name: Create certificate jks
+  command: keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore {{ input_role_paths.ssl_cert_dir }}/jenkins.jks -srckeystore {{ input_role_paths.ssl_cert_dir }}/jenkins.p12 -srcstoretype PKCS12 -srcstorepass changeit
+  when:
+    - input_role_jenkins_ssl_cert.server_crt is defined
+    - input_role_jenkins_ssl_cert.server_key is defined
+    - jenkins_crt_result.stat.exists
+    - jenkins_key_result.stat.exists
+    - jenkins_crt_status.changed
+    - jenkins_key_status.changed
+
+# Change permissions
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/jenkins.p12 exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.p12"
+  register: jenkins_p12_result2
+
+- name: Check that the {{ input_role_paths.ssl_cert_dir }}/jenkins.jks exists
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
+  register: jenkins_jks_result2
+
+- name: Change permissions {{ input_role_paths.ssl_cert_dir }}/jenkins.p12
+  file:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.p12"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
+  when:
+    - jenkins_p12_result2.stat.exists
+
+- name: Change permissions {{ input_role_paths.ssl_cert_dir }}/jenkins.jks
+  file:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    mode: 0644
+  when:
+    - jenkins_jks_result2.stat.exists

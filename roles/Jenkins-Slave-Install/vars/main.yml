@@ -1,0 +1,18 @@
+---
+vars_role_jenkins_group:
+  name: "{{ input_role_jenkins_slaves_group.name }}"
+  gid:  "{{ input_role_jenkins_slaves_group.gid }}"
+
+vars_role_jenkins_slave_user_template:
+  name: "jenkins_"
+  comment: "Jenkins Slave - Worker_"
+  uid: "3502"
+  shell: /bin/bash
+
+vars_jenkins_master_system_user:
+  username: "{{ input_role_technical_account.username | default('jenkins') }}"
+  comment:  "{{ input_role_technical_account.comment | default('Jenkins - technical user account') }}"
+  shell:    "{{ input_role_technical_account.shell | default('/bin/bash') }}"
+  groups:   "{{ input_role_technical_account.system_groups | default('') }}"
+  uid:      "{{ input_role_technical_account.uid | default('30001') }}"
+  gid:      "{{ input_role_technical_account.gid | default('30000') }}"

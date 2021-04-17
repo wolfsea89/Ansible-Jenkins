@@ -1,0 +1,20 @@
+---
+- name: Create .ssh directory in jenkins_home
+  file:
+    path: "{{ input_role_paths.jenkins_home_path }}/.ssh"
+    state: directory
+
+- name: "Create {{ input_role_paths.jenkins_home_path }}/.ssh/known_hosts"
+  file:
+    path: "{{ input_role_paths.jenkins_home_path }}/.ssh/known_hosts"
+    mode: 0777
+    state: touch
+
+- name: Add ssh jenkins slave linux fingerprint to jenkins-master known host
+  lineinfile:
+    dest: "{{ input_role_paths.jenkins_home_path }}/.ssh/known_hosts"
+    state: present
+    create: yes
+    line: "{{ lookup('pipe','ssh-keyscan -t ecdsa-sha2-nistp256 {{ item }}') }}"
+    regexp: "{{ item }}"
+  loop: "{{ groups['jenkins_slave_linux'] }}"

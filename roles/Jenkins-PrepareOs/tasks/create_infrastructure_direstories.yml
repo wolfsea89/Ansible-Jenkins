@@ -1,0 +1,24 @@
+- name: "Create infrastructure directories"
+  file:
+    state: directory
+    path: "{{ item.value }}"
+    owner: "{{ vars_jenkins_master_system_user.username }}"
+    group: "{{ vars_jenkins_master_system_user.username }}"
+    mode: '0775'
+  loop: "{{ lookup('dict', input_role_paths) }}"
+
+- name: SELinux setup context {{ input_role_paths.volume_path }}
+  shell: "chcon unconfined_u:object_r:user_home_t:s0 {{ input_role_paths.volume_path }}"
+  when: input_role_os_distribution == "CentOS"
+
+- name: SELinux setup context {{ input_role_paths.jenkins_home_path }}
+  shell: "chcon unconfined_u:object_r:user_home_t:s0 {{ input_role_paths.jenkins_home_path }}"
+  when: input_role_os_distribution == "CentOS"
+
+- name: SELinux setup context {{ input_role_paths.jenkins_slaves_home_path }}
+  shell: "chcon unconfined_u:object_r:user_home_t:s0 {{ input_role_paths.jenkins_slaves_home_path }}"
+  when: input_role_os_distribution == "CentOS"
+
+- name: SELinux setup context {{ input_role_paths.volume_jenkins_home }}
+  shell: "chcon unconfined_u:object_r:container_var_lib_t:s0 {{ input_role_paths.volume_jenkins_home }}"
+  when: input_role_os_distribution == "CentOS"

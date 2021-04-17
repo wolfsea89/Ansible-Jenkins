@@ -1,0 +1,47 @@
+- name: Docker pull
+  shell: "docker pull {{ input_role_jenkins_master_app_configuration.jenkins_docker_image_path }}"
+
+- name: Check is SSL certificate
+  stat:
+    path: "{{ input_role_paths.ssl_cert_dir }}/jenkins.jks"
+  register: jenkins_jks_result
+
+- name: Stop jenkins_master
+  changed_when: false
+  ignore_errors: yes
+  shell: docker stop jenkins_master
+
+- name: Stop and clean jenkins
+  shell: docker rm --force jenkins_master
+  ignore_errors: yes
+
+- name: Start jenkins to http
+  shell: |
+    docker run -d \
+    --name jenkins_master \
+    --user "{{ vars_jenkins_master_system_user.uid }}:{{ vars_jenkins_master_system_user.gid }}" \
+    --publish {{ input_role_jenkins_master_app_configuration.httpPort }}:8080 \
+    --publish {{ input_role_jenkins_master_app_configuration.slaveAgentPort }}:50000 \
+    --volume "{{ input_role_paths.volume_jenkins_home }}:/var/jenkins_home:z" \
+    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl:z" \
+    --restart always \
+    {{ input_role_jenkins_master_app_configuration.jenkins_docker_image_path }}
+  when: jenkins_jks_result.stat.exists == false
+
+- name: Start jenkins to https
+  shell: |
+    docker run -d \
+    --privileged \
+    --name jenkins_master \
+    --user "{{ vars_jenkins_master_system_user.uid }}:{{ vars_jenkins_master_system_user.gid }}" \
+    --publish {{ input_role_jenkins_master_app_configuration.httpPort }}:8443 \
+    --publish {{ input_role_jenkins_master_app_configuration.slaveAgentPort }}:50000 \
+    --volume "{{ input_role_paths.volume_jenkins_home }}:/var/jenkins_home":z \
+    --volume "{{ input_role_paths.ssl_cert_dir }}:/etc/ssl:z" \
+    --restart always \
+    {{ input_role_jenkins_master_app_configuration.jenkins_docker_image_path }} \
+    --httpPort=-1 \
+    --httpsPort=8443 \
+    --httpsKeyStore=/etc/ssl/jenkins.jks \
+    --httpsKeyStorePassword=changeit
+  when: jenkins_jks_result.stat.exists == true
