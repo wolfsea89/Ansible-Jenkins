@@ -94,6 +94,7 @@ Inventory
     group_vars/jenkins_master/app_configuration.yml
     ```
     invenory_group_jenkins_master_app_configuration:
+      jenkins_docker_image_path: wolfsea89/jenkins-master:1.0.0.485
       master_number_of_executors: 10
       httpPort: 443
       slaveAgentPort: 50000
